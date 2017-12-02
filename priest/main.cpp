@@ -5,7 +5,11 @@
 #define TITLE "priest"
 
 int main() {
-  sf::RenderWindow window(sf::VideoMode(640, 480), TITLE);
+  sf::RenderWindow window(sf::VideoMode().getDesktopMode(), TITLE, sf::Style::Fullscreen);
+  sf::RectangleShape player(sf::Vector2f(20.f, 20.f));
+  
+  player.setFillColor(sf::Color::Black);
+  player.setPosition(sf::Vector2f(window.getSize().x / 2, window.getSize().y / 2));
   
   while(window.isOpen()) {
     sf::Event event;
@@ -15,8 +19,12 @@ int main() {
       }
     }
 
-    window.clear();
-
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+      window.close();
+    }
+    
+    window.clear(sf::Color::Magenta);
+    window.draw(player);
     window.display();
   }
   return 0;
