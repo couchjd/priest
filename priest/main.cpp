@@ -6,11 +6,32 @@
 
 int main() {
   sf::RenderWindow window(sf::VideoMode().getDesktopMode(), TITLE, sf::Style::Fullscreen);
-  sf::RectangleShape player(sf::Vector2f(20.f, 20.f));
   
-  player.setFillColor(sf::Color::Black);
-  player.setPosition(sf::Vector2f(window.getSize().x / 2, window.getSize().y / 2));
+  sf::Image viewPortColor;
+  viewPortColor.create(640.f, 640.f, sf::Color::White);
+
+  sf::Texture viewPortBackground;
+  viewPortBackground.loadFromImage(viewPortColor);
+
+  sf::Sprite viewPort;
+  float border = (window.getSize().y - 640.f) / 2;
+  viewPort.setPosition(border, border);
+  viewPort.setTexture(viewPortBackground);
   
+  sf::RectangleShape player(sf::Vector2f(32.f, 32.f));
+  player.setFillColor(sf::Color::Red);
+  player.setPosition(sf::Vector2f(viewPort.getPosition().x + 320.f, viewPort.getPosition().y + 320.f));
+
+  sf::Font font;
+  font.loadFromFile("./fonts/8-Bit Madness.ttf");
+
+  sf::Text text;
+  text.setFont(font);
+  text.setString("Strength:\t18\nIntelligence:\t18\nWisdom:\t18");
+  text.setCharacterSize(24);
+  text.setFillColor(sf::Color::White);
+  text.setPosition(((2*border) + 640.f), border);
+
   while(window.isOpen()) {
     sf::Event event;
     while(window.pollEvent(event)) {
@@ -20,16 +41,16 @@ int main() {
 
       if(event.type == sf::Event::KeyPressed) {
         if(event.key.code == sf::Keyboard::Up) {
-          player.setPosition(player.getPosition().x, player.getPosition().y - 20.f);
+          player.setPosition(player.getPosition().x, player.getPosition().y - 32.f);
         }
         if(event.key.code == sf::Keyboard::Down) {
-          player.setPosition(player.getPosition().x, player.getPosition().y + 20.f);
+          player.setPosition(player.getPosition().x, player.getPosition().y + 32.f);
         }
         if(event.key.code == sf::Keyboard::Left) {
-          player.setPosition(player.getPosition().x - 20.f, player.getPosition().y);
+          player.setPosition(player.getPosition().x - 32.f, player.getPosition().y);
         }
         if(event.key.code == sf::Keyboard::Right) {
-          player.setPosition(player.getPosition().x + 20.f, player.getPosition().y);
+          player.setPosition(player.getPosition().x + 32.f, player.getPosition().y);
         }
       }
     }
@@ -50,8 +71,10 @@ int main() {
       player.setPosition(player.getPosition().x + 1.f, player.getPosition().y);
     }
 
-    window.clear(sf::Color::Cyan);
+    window.clear(sf::Color::Black);
+    window.draw(viewPort);
     window.draw(player);
+    window.draw(text);
     window.display();
   }
   return 0;
