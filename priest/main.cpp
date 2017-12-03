@@ -6,6 +6,12 @@
 #define TITLE           "priest"
 #define VIEWPORT_SIZE   640.f
 
+std::string itos(int input) {
+  std::stringstream ss;
+  ss << input;
+  return ss.str();
+}
+
 int main() {
   int viewPortX = 0.f;
   int viewPortY = 0.f;
@@ -29,15 +35,9 @@ int main() {
   font.loadFromFile("./fonts/8-Bit Madness.ttf");
 
   std::string string1 = "Width:\t";
-  std::stringstream ss;
-  ss << viewPortBackground.getSize().x;
-  std::string string2 = string1 + ss.str() + "\n";
-  ss.str("");
-  std::string string3 = "Height:\t";
-  ss << viewPortBackground.getSize().y;
-  string2 += string3;
-  string2 += ss.str();
-
+  viewPortBackground.getSize().x;
+  std::string string2 = string1 + itos(viewPortBackground.getSize().x) + "\n";
+  string2 += "Height:\t" + itos(viewPortBackground.getSize().y);
 
   sf::Text text;
   text.setFont(font);
@@ -91,7 +91,7 @@ int main() {
 
     window.clear(sf::Color::Black);
     window.draw(viewPort);
-    window.draw(player);
+    //window.draw(player);
     window.draw(text);
     window.display();
   }
