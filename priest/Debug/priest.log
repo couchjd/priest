@@ -1,4 +1,16 @@
 ﻿  main.cpp
-c:\users\couch\documents\programming\priest\priest\main.cpp(11): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+c:\users\couch\documents\programming\priest\priest\main.cpp(10): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\couch\documents\programming\priest\priest\main.cpp(11): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\couch\documents\programming\priest\priest\main.cpp(22): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\couch\documents\programming\priest\priest\main.cpp(61): warning C4244: '-=': conversion from 'float' to 'int', possible loss of data
+c:\users\couch\documents\programming\priest\priest\main.cpp(63): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\couch\documents\programming\priest\priest\main.cpp(67): warning C4018: '<': signed/unsigned mismatch
+c:\users\couch\documents\programming\priest\priest\main.cpp(68): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+c:\users\couch\documents\programming\priest\priest\main.cpp(70): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\couch\documents\programming\priest\priest\main.cpp(75): warning C4244: '-=': conversion from 'float' to 'int', possible loss of data
+c:\users\couch\documents\programming\priest\priest\main.cpp(77): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\couch\documents\programming\priest\priest\main.cpp(81): warning C4018: '<': signed/unsigned mismatch
+c:\users\couch\documents\programming\priest\priest\main.cpp(82): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+c:\users\couch\documents\programming\priest\priest\main.cpp(84): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
   priest.vcxproj -> C:\Users\couch\Documents\PROGRAMMING\priest\Debug\priest.exe
   priest.vcxproj -> C:\Users\couch\Documents\PROGRAMMING\priest\Debug\priest.pdb (Full PDB)

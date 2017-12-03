@@ -1,36 +1,50 @@
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
+#include <sstream>
 
-#define TITLE "priest"
+#define TITLE           "priest"
+#define VIEWPORT_SIZE   640.f
 
 int main() {
-  sf::RenderWindow window(sf::VideoMode().getDesktopMode(), TITLE, sf::Style::Fullscreen);
+  int viewPortX = 0.f;
+  int viewPortY = 0.f;
   
-  sf::Image viewPortColor;
-  viewPortColor.create(640.f, 640.f, sf::Color::White);
+  sf::RenderWindow window(sf::VideoMode().getDesktopMode(), TITLE, sf::Style::Fullscreen);
 
   sf::Texture viewPortBackground;
-  viewPortBackground.loadFromImage(viewPortColor);
+  viewPortBackground.loadFromFile("test.bmp");
 
   sf::Sprite viewPort;
-  float border = (window.getSize().y - 640.f) / 2;
+  float border = (window.getSize().y - VIEWPORT_SIZE) / 2;
   viewPort.setPosition(border, border);
   viewPort.setTexture(viewPortBackground);
-  
+  viewPort.setTextureRect(sf::IntRect(viewPortX, viewPortY, VIEWPORT_SIZE, VIEWPORT_SIZE));
+
   sf::RectangleShape player(sf::Vector2f(32.f, 32.f));
   player.setFillColor(sf::Color::Red);
-  player.setPosition(sf::Vector2f(viewPort.getPosition().x + 320.f, viewPort.getPosition().y + 320.f));
+  player.setPosition(sf::Vector2f(viewPort.getPosition().x + VIEWPORT_SIZE / 2, viewPort.getPosition().y + VIEWPORT_SIZE / 2));
 
   sf::Font font;
   font.loadFromFile("./fonts/8-Bit Madness.ttf");
 
+  std::string string1 = "Width:\t";
+  std::stringstream ss;
+  ss << viewPortBackground.getSize().x;
+  std::string string2 = string1 + ss.str() + "\n";
+  ss.str("");
+  std::string string3 = "Height:\t";
+  ss << viewPortBackground.getSize().y;
+  string2 += string3;
+  string2 += ss.str();
+
+
   sf::Text text;
   text.setFont(font);
-  text.setString("Strength:\t18\nIntelligence:\t18\nWisdom:\t18");
+  text.setString(string2);
   text.setCharacterSize(24);
   text.setFillColor(sf::Color::White);
-  text.setPosition(((2*border) + 640.f), border);
+  text.setPosition(((2*border) + VIEWPORT_SIZE), border);
 
   while(window.isOpen()) {
     sf::Event event;
@@ -42,33 +56,37 @@ int main() {
       if(event.type == sf::Event::KeyPressed) {
         if(event.key.code == sf::Keyboard::Up) {
           player.setPosition(player.getPosition().x, player.getPosition().y - 32.f);
+          if(viewPortY - 32.f > 0.f) {
+            viewPortY -= 32.f;
+          }
+          viewPort.setTextureRect(sf::IntRect(viewPortX, viewPortY, VIEWPORT_SIZE, VIEWPORT_SIZE));
         }
         if(event.key.code == sf::Keyboard::Down) {
           player.setPosition(player.getPosition().x, player.getPosition().y + 32.f);
+          if(viewPortY < viewPortBackground.getSize().y) {
+            viewPortY += 32.f;
+          }
+          viewPort.setTextureRect(sf::IntRect(viewPortX, viewPortY, VIEWPORT_SIZE, VIEWPORT_SIZE));
         }
         if(event.key.code == sf::Keyboard::Left) {
           player.setPosition(player.getPosition().x - 32.f, player.getPosition().y);
+          if(viewPortX - 32.f > 0.f) {
+            viewPortX -= 32.f;
+          }
+          viewPort.setTextureRect(sf::IntRect(viewPortX, viewPortY, VIEWPORT_SIZE, VIEWPORT_SIZE));
         }
         if(event.key.code == sf::Keyboard::Right) {
           player.setPosition(player.getPosition().x + 32.f, player.getPosition().y);
+          if(viewPortX < viewPortBackground.getSize().x) {
+            viewPortX += 32.f;
+          }
+          viewPort.setTextureRect(sf::IntRect(viewPortX, viewPortY, VIEWPORT_SIZE, VIEWPORT_SIZE));
         }
       }
     }
 
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
       window.close();
-    }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-      player.setPosition(player.getPosition().x, player.getPosition().y - 1.f);
-    }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-      player.setPosition(player.getPosition().x, player.getPosition().y + 1.f);
-    }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-      player.setPosition(player.getPosition().x - 1.f, player.getPosition().y);
-    }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-      player.setPosition(player.getPosition().x + 1.f, player.getPosition().y);
     }
 
     window.clear(sf::Color::Black);
