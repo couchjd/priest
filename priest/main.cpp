@@ -6,16 +6,42 @@
 #define TITLE           "priest"
 #define VIEWPORT_SIZE   640.f
 
+struct stats {
+  int str;
+  int intel;
+  int wis;
+  int dex;
+  int con;
+  int cha;
+  int hpMax;
+  int hpCurr;
+};
+
 std::string itos(int input) {
   std::stringstream ss;
   ss << input;
   return ss.str();
 }
 
+std::string statString(struct stats& stats) {
+  return  itos(stats.str) + "\n" + itos(stats.intel) + "\n" + itos(stats.wis) + "\n" + itos(stats.dex) + "\n" +
+          itos(stats.con) + "\n" + itos(stats.cha) + "\n\n" + itos(stats.hpCurr) + "\\" + itos(stats.hpMax);
+}
+
 int main() {
   int viewPortX = 0.f;
   int viewPortY = 0.f;
-  
+
+  struct stats stats;
+  stats.str     = 18;
+  stats.intel   = 16;
+  stats.wis     = 14;
+  stats.dex     = 17;
+  stats.con     = 18;
+  stats.cha     = 13;
+  stats.hpCurr  = 55;
+  stats.hpMax   = 63;
+
   sf::RenderWindow window(sf::VideoMode().getDesktopMode(), TITLE, sf::Style::Fullscreen);
 
   sf::Texture viewPortBackground;
@@ -34,17 +60,22 @@ int main() {
   sf::Font font;
   font.loadFromFile("./fonts/8-Bit Madness.ttf");
 
-  std::string string1 = "Width:\t";
-  viewPortBackground.getSize().x;
-  std::string string2 = string1 + itos(viewPortBackground.getSize().x) + "\n";
-  string2 += "Height:\t" + itos(viewPortBackground.getSize().y);
+  std::string statLabelsString = "Strength:\nIntelligence : \nWisdom : \nDexterity : \nConstitution : \nCharisma : \n\nHP:";
+  std::string statValuesString = statString(stats);
+  
+  sf::Text labels;
+  labels.setFont(font);
+  labels.setString(statLabelsString);
+  labels.setCharacterSize(24);
+  labels.setFillColor(sf::Color::White);
+  labels.setPosition(((2*border) + VIEWPORT_SIZE), border);
 
-  sf::Text text;
-  text.setFont(font);
-  text.setString(string2);
-  text.setCharacterSize(24);
-  text.setFillColor(sf::Color::White);
-  text.setPosition(((2*border) + VIEWPORT_SIZE), border);
+  sf::Text values;
+  values.setFont(font);
+  values.setString(statValuesString);
+  values.setCharacterSize(24);
+  values.setFillColor(sf::Color::White);
+  values.setPosition(labels.getPosition().x + 200, border);
 
   while(window.isOpen()) {
     sf::Event event;
@@ -63,7 +94,7 @@ int main() {
         }
         if(event.key.code == sf::Keyboard::Down) {
           player.setPosition(player.getPosition().x, player.getPosition().y + 32.f);
-          if(viewPortY < viewPortBackground.getSize().y) {
+          if(viewPortY < 520.f) {
             viewPortY += 32.f;
           }
           viewPort.setTextureRect(sf::IntRect(viewPortX, viewPortY, VIEWPORT_SIZE, VIEWPORT_SIZE));
@@ -77,7 +108,7 @@ int main() {
         }
         if(event.key.code == sf::Keyboard::Right) {
           player.setPosition(player.getPosition().x + 32.f, player.getPosition().y);
-          if(viewPortX < viewPortBackground.getSize().x) {
+          if(viewPortX < /*viewPortBackground.getSize().x*/520.f) {
             viewPortX += 32.f;
           }
           viewPort.setTextureRect(sf::IntRect(viewPortX, viewPortY, VIEWPORT_SIZE, VIEWPORT_SIZE));
@@ -92,7 +123,8 @@ int main() {
     window.clear(sf::Color::Black);
     window.draw(viewPort);
     //window.draw(player);
-    window.draw(text);
+    window.draw(labels);
+    window.draw(values);
     window.display();
   }
   return 0;

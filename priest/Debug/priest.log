@@ -1,2 +1,14 @@
-﻿  priest.vcxproj -> C:\Users\couch\Documents\PROGRAMMING\priest\Debug\priest.exe
+﻿  main.cpp
+c:\users\couch\documents\programming\priest\priest\main.cpp(32): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\couch\documents\programming\priest\priest\main.cpp(33): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\couch\documents\programming\priest\priest\main.cpp(54): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\couch\documents\programming\priest\priest\main.cpp(91): warning C4244: '-=': conversion from 'float' to 'int', possible loss of data
+c:\users\couch\documents\programming\priest\priest\main.cpp(93): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\couch\documents\programming\priest\priest\main.cpp(98): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+c:\users\couch\documents\programming\priest\priest\main.cpp(100): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\couch\documents\programming\priest\priest\main.cpp(105): warning C4244: '-=': conversion from 'float' to 'int', possible loss of data
+c:\users\couch\documents\programming\priest\priest\main.cpp(107): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\couch\documents\programming\priest\priest\main.cpp(112): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+c:\users\couch\documents\programming\priest\priest\main.cpp(114): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  priest.vcxproj -> C:\Users\couch\Documents\PROGRAMMING\priest\Debug\priest.exe
   priest.vcxproj -> C:\Users\couch\Documents\PROGRAMMING\priest\Debug\priest.pdb (Full PDB)
