@@ -2,20 +2,11 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <sstream>
+#include "Player.h"
+#include "Sprites.h"
 
 #define TITLE           "priest"
 #define VIEWPORT_SIZE   640.f
-
-struct stats {
-  int str;
-  int intel;
-  int wis;
-  int dex;
-  int con;
-  int cha;
-  int hpMax;
-  int hpCurr;
-};
 
 std::string itos(int input) {
   std::stringstream ss;
@@ -23,45 +14,53 @@ std::string itos(int input) {
   return ss.str();
 }
 
-std::string statString(struct stats& stats) {
-  return  itos(stats.str) + "\n" + itos(stats.intel) + "\n" + itos(stats.wis) + "\n" + itos(stats.dex) + "\n" +
-          itos(stats.con) + "\n" + itos(stats.cha) + "\n\n" + itos(stats.hpCurr) + "\\" + itos(stats.hpMax);
+std::string statString(int* stats) {
+  return  itos(stats[STR]) + "\n" + itos(stats[INT]) + "\n" + itos(stats[WIS]) + "\n" + itos(stats[DEX]) + "\n" +
+          itos(stats[CON]) + "\n" + itos(stats[CHA]) + "\n\n" + itos(stats[HP_CUR]) + "\\" + itos(stats[HP_MAX]);
 }
 
 int main() {
+  Player player;
+  sf::Texture playerSheet;
+  playerSheet.loadFromFile("Characters.png");
+
+  sf::Sprite playerSprite;
+  playerSprite.setTexture(playerSheet);
+  playerSprite.setTextureRect(sf::IntRect(PRIEST_FRONT_LEFT));
+  player.pSprite = playerSprite;
+  player.pSprite.setPosition(100.f, 100.f);
+  player.pSprite.setScale(3, 3);
+
   int viewPortX = 0.f;
   int viewPortY = 0.f;
 
-  struct stats stats;
-  stats.str     = 18;
-  stats.intel   = 16;
-  stats.wis     = 14;
-  stats.dex     = 17;
-  stats.con     = 18;
-  stats.cha     = 13;
-  stats.hpCurr  = 55;
-  stats.hpMax   = 63;
+  player.stats[STR] = 18;
+  player.stats[INT] = 16;
+  player.stats[WIS] = 14;
+  player.stats[DEX] = 17;
+  player.stats[CON] = 18;
+  player.stats[CHA] = 13;
+  player.stats[HP_CUR] = 55;
+  player.stats[HP_MAX] = 63;
 
-  sf::RenderWindow window(sf::VideoMode().getDesktopMode(), TITLE, sf::Style::Fullscreen);
+  sf::RenderWindow window(sf::VideoMode().getDesktopMode(), TITLE /*, sf::Style::Fullscreen*/);
 
   sf::Texture viewPortBackground;
-  viewPortBackground.loadFromFile("test.bmp");
-
+  if(!viewPortBackground.loadFromFile("background1.bmp")) {
+    printf("Failed to load sprite sheet.\n");
+  }
+  
   sf::Sprite viewPort;
   float border = (window.getSize().y - VIEWPORT_SIZE) / 2;
   viewPort.setPosition(border, border);
   viewPort.setTexture(viewPortBackground);
   viewPort.setTextureRect(sf::IntRect(viewPortX, viewPortY, VIEWPORT_SIZE, VIEWPORT_SIZE));
 
-  sf::RectangleShape player(sf::Vector2f(32.f, 32.f));
-  player.setFillColor(sf::Color::Red);
-  player.setPosition(sf::Vector2f(viewPort.getPosition().x + VIEWPORT_SIZE / 2, viewPort.getPosition().y + VIEWPORT_SIZE / 2));
-
   sf::Font font;
   font.loadFromFile("./fonts/8-Bit Madness.ttf");
 
   std::string statLabelsString = "Strength:\nIntelligence : \nWisdom : \nDexterity : \nConstitution : \nCharisma : \n\nHP:";
-  std::string statValuesString = statString(stats);
+  std::string statValuesString = statString(player.stats);
   
   sf::Text labels;
   labels.setFont(font);
@@ -86,32 +85,28 @@ int main() {
 
       if(event.type == sf::Event::KeyPressed) {
         if(event.key.code == sf::Keyboard::Up) {
-          player.setPosition(player.getPosition().x, player.getPosition().y - 32.f);
-          if(viewPortY - 32.f > 0.f) {
-            viewPortY -= 32.f;
-          }
-          viewPort.setTextureRect(sf::IntRect(viewPortX, viewPortY, VIEWPORT_SIZE, VIEWPORT_SIZE));
+          if(!(player.facing == BACK)) {
+            player.facing = BACK;
+            player.pSprite.setTextureRect(sf::IntRect(PRIEST_BACK_LEFT));
+          }  
         }
         if(event.key.code == sf::Keyboard::Down) {
-          player.setPosition(player.getPosition().x, player.getPosition().y + 32.f);
-          if(viewPortY < 520.f) {
-            viewPortY += 32.f;
+          if(!(player.facing == FRONT)) {
+            player.facing = FRONT;
+            player.pSprite.setTextureRect(sf::IntRect(PRIEST_FRONT_LEFT));
           }
-          viewPort.setTextureRect(sf::IntRect(viewPortX, viewPortY, VIEWPORT_SIZE, VIEWPORT_SIZE));
         }
         if(event.key.code == sf::Keyboard::Left) {
-          player.setPosition(player.getPosition().x - 32.f, player.getPosition().y);
-          if(viewPortX - 32.f > 0.f) {
-            viewPortX -= 32.f;
+          if(!(player.facing == LEFT)) {
+            player.facing = LEFT;
+            player.pSprite.setTextureRect(sf::IntRect(PRIEST_LEFT_STOP));
           }
-          viewPort.setTextureRect(sf::IntRect(viewPortX, viewPortY, VIEWPORT_SIZE, VIEWPORT_SIZE));
         }
         if(event.key.code == sf::Keyboard::Right) {
-          player.setPosition(player.getPosition().x + 32.f, player.getPosition().y);
-          if(viewPortX < /*viewPortBackground.getSize().x*/520.f) {
-            viewPortX += 32.f;
+          if(!(player.facing == RIGHT)) {
+            player.facing = RIGHT;
+            player.pSprite.setTextureRect(sf::IntRect(PRIEST_RIGHT_STOP));
           }
-          viewPort.setTextureRect(sf::IntRect(viewPortX, viewPortY, VIEWPORT_SIZE, VIEWPORT_SIZE));
         }
       }
     }
@@ -122,9 +117,9 @@ int main() {
 
     window.clear(sf::Color::Black);
     window.draw(viewPort);
-    //window.draw(player);
     window.draw(labels);
     window.draw(values);
+    window.draw(player.pSprite);
     window.display();
   }
   return 0;
