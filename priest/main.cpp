@@ -1,47 +1,33 @@
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
-#include <sstream>
 #include "Player.h"
 #include "Sprites.h"
+#include "Utility.h"
+#include "testing.h"
 
 #define TITLE           "priest"
 #define VIEWPORT_SIZE   640.f
 
-std::string itos(int input) {
-  std::stringstream ss;
-  ss << input;
-  return ss.str();
-}
-
-std::string statString(int* stats) {
-  return  itos(stats[STR]) + "\n" + itos(stats[INT]) + "\n" + itos(stats[WIS]) + "\n" + itos(stats[DEX]) + "\n" +
-          itos(stats[CON]) + "\n" + itos(stats[CHA]) + "\n\n" + itos(stats[HP_CUR]) + "\\" + itos(stats[HP_MAX]);
-}
+Player player;
 
 int main() {
-  Player player;
-  sf::Texture playerSheet;
-  playerSheet.loadFromFile("Characters.png");
+  srand(time(NULL));
+
+  sf::Texture characterSheet;
+  characterSheet.loadFromFile("Characters.png");
+
+  TESTING::initSprites(TESTING::sprites, characterSheet);
 
   sf::Sprite playerSprite;
-  playerSprite.setTexture(playerSheet);
+  playerSprite.setTexture(characterSheet);
   playerSprite.setTextureRect(sf::IntRect(PRIEST_FRONT_LEFT));
   player.pSprite = playerSprite;
   player.pSprite.setPosition(100.f, 100.f);
-  player.pSprite.setScale(3, 3);
+  player.pSprite.setScale(4, 4);
 
   int viewPortX = 0.f;
   int viewPortY = 0.f;
-
-  player.stats[STR] = 18;
-  player.stats[INT] = 16;
-  player.stats[WIS] = 14;
-  player.stats[DEX] = 17;
-  player.stats[CON] = 18;
-  player.stats[CHA] = 13;
-  player.stats[HP_CUR] = 55;
-  player.stats[HP_MAX] = 63;
 
   sf::RenderWindow window(sf::VideoMode().getDesktopMode(), TITLE /*, sf::Style::Fullscreen*/);
 
@@ -67,7 +53,7 @@ int main() {
   labels.setString(statLabelsString);
   labels.setCharacterSize(24);
   labels.setFillColor(sf::Color::White);
-  labels.setPosition(((2*border) + VIEWPORT_SIZE), border);
+  labels.setPosition(((2 * border) + VIEWPORT_SIZE), border);
 
   sf::Text values;
   values.setFont(font);
@@ -119,6 +105,10 @@ int main() {
     window.draw(viewPort);
     window.draw(labels);
     window.draw(values);
+
+    for(int x = 0; x < 5; x++)
+      window.draw(*TESTING::sprites[x]);
+
     window.draw(player.pSprite);
     window.display();
   }

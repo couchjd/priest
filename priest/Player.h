@@ -26,8 +26,10 @@ public:
   sf::Sprite pSprite;
   int stats[8];
   int facing;
+  Player();
+
+private:
+  int rollStat();
 };
-
-
 
 #endif // !PLAYER_H
